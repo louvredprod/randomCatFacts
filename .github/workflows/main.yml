@@ -1,0 +1,23 @@
+name: Auto Commit
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Каждый день в 09:00 UTC
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Auto commit
+      run: |
+        git config --global user.email "dm.2909@mail.ru"
+        git config --global user.name "Louvredprod"
+        date > activity.txt
+        git add activity.txt
+        git commit -m "daily commit"
+        git push
