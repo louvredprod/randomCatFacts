@@ -2,7 +2,7 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: '0 9 * * *'  # Каждый день в 08:00 UTC
+    - cron: '0 9 * * *'  # Каждый день в 09:55 UTC
   workflow_dispatch:
 
 jobs:
