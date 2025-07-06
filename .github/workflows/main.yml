@@ -1,8 +1,8 @@
-name: Auto Commit
+name: Daily Commit
 
 on:
   schedule:
-    - cron: '09 * * *'  # Каждый день в 12:00 UTC
+    - cron: "0 8 * * *"  # каждый день в 12:00 по МСК (8:00 UTC)
   workflow_dispatch:
 
 jobs:
@@ -10,14 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.MY_PAT }}   # ← Важно!
 
-    - name: Auto commit
-      run: |
-        git config --global user.email "dm.2909@mail.ru"
-        git config --global user.name "louvredprod"
-        date > activity.txt
-        git add activity.txt
-        git commit -m "daily commit"
-        git push
+      - name: Set up Git
+        run: |
+          git config --global user.email "dm.2909@mail.ru"
+          git config --global user.name "louvredprod"
+
+      - name: Make a commit
+        run: |
+          echo "$(date)" >> log.txt
+          git add log.txt
+          git commit -m "Daily update" || echo "Nothing to commit"
+          git push
